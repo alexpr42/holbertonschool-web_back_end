@@ -6,4 +6,5 @@ argument and returns their sums a float"""
 
 
 def sum_list(input_list: List[float]) -> float:
+    """return of sum of the input list"""
     return sum(input_list)
