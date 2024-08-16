@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 from typing import Callable
 
-""" Annotated function that takes float multiplier as arg"""
+""" Annotated function that takes float multiplier as arg
+and return a fuction that multipies a float
+"""
 
 
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
