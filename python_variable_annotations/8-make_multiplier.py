@@ -2,30 +2,31 @@
 from typing import Callable
 
 """
-This module contains a function `make_multiplier`
-which generates a multiplier function. The generated function
-will multiply a float by a given multiplier.
+This module provides a function `make_multiplier`.
+The `make_multiplier` function takes a float as an argument
+and returns another function that multiplies a given float by
+the specified multiplier.
 """
 
 
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
-    """Function that creates a multiplier function.
+    """Creates a function that multiplies a float by the given multiplier.
 
     Args:
-        multiplier (float): The value by which to multiply the input.
+        multiplier (float): The value by which to multiply input floats.
 
     Returns:
         Callable[[float], float]: A function that takes a float
-        and returns it multiplied by the multiplier.
+        and returns the product of the float and the multiplier.
     """
     def multiplier_function(x: float) -> float:
-        """Function that multiplies a float by the multiplier.
+        """Multiplies a float by the pre-defined multiplier.
 
         Args:
-            x (float): The value to be multiplied.
+            x (float): The float to be multiplied.
 
         Returns:
-            float: The result of the multiplication.
+            float: The result of multiplying `x` by the multiplier.
         """
         return x * multiplier
 
