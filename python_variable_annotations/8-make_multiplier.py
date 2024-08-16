@@ -1,19 +1,31 @@
 #!/usr/bin/env python3
 from typing import Callable
 
-""" Annotated function that takes float multiplier as arg
-and return a fuction that multipies a float
+"""
+This module contains a function `make_multiplier`
+which generates a multiplier function. The generated function
+will multiply a float by a given multiplier.
 """
 
-
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
-    """funtion that multiplier a float
+    """Function that creates a multiplier function.
+
+    Args:
+        multiplier (float): The value by which to multiply the input.
+
+    Returns:
+        Callable[[float], float]: A function that takes a float
+        and returns it multiplied by the multiplier.
     """
     def multiplier_function(x: float) -> float:
-        """ function that multiplies a foat
-        by multiplier. annotated function
+        """Function that multiplies a float by the multiplier.
+
+        Args:
+            x (float): The value to be multiplied.
+
+        Returns:
+            float: The result of the multiplication.
         """
         return x * multiplier
-    """return a multipler function
-    """
+
     return multiplier_function
