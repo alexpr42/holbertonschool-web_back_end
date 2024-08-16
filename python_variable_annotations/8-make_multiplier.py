@@ -10,4 +10,5 @@ def make_multiplier(multiplier: float) -> Callable[[float], float]:
         by multiplier. annotated function
         """
         return x * multiplier
+    """return a multipler function"""
     return multiplier_function
