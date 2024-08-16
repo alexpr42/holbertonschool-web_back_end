@@ -7,6 +7,7 @@ which generates a multiplier function. The generated function
 will multiply a float by a given multiplier.
 """
 
+
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
     """Function that creates a multiplier function.
 
