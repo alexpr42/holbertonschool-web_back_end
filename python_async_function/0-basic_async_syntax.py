@@ -12,6 +12,13 @@ async def wait_random(max_delay: int = 10) -> float:
     Returns:
         float: The actual delay that was waited.
     """
+    random.seed(42)  # Seed for reproducibility
     delay = random.uniform(0, max_delay)  # Generate a random delay
     await asyncio.sleep(delay)            # Wait for the delay
     return delay                           # Return the delay
+
+# Testing the function
+if __name__ == "__main__":
+    print(asyncio.run(wait_random()))
+    print(asyncio.run(wait_random(5)))
+    print(asyncio.run(wait_random(15)))
