@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from typing import Callable
+
 
 """
 This module provides a function `make_multiplier`.
@@ -7,6 +7,9 @@ The `make_multiplier` function takes a float as an argument
 and returns another function that multiplies a given float by
 the specified multiplier.
 """
+
+
+from typing import Callable
 
 
 def make_multiplier(multiplier: float) -> Callable[[float], float]:
