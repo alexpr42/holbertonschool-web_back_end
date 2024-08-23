@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""Create measure time fuction with integers"""
+
+
 import asyncio
 import time
 from typing import List
