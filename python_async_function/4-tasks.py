@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""take a code and alter it into a new function"""
+
+
 import asyncio
 from typing import List
 
