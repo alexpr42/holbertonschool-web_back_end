@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""write a function that takes an integer with max delay
+and return asyncio"""
+
+
 import asyncio
 import random
 
