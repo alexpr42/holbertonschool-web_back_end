@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+
 """
 This module contains a function called `sum_list` that takes a list of floats
 and returns the sum of those floats.
