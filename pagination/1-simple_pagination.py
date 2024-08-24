@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
-"""takes two interger arguments with default values"""
+
+"""servier class to pagination"""
 
 
 import csv
+import math
 from typing import List, Tuple
-
-
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    start = (page - 1) * page_size
-    end = page * page_size
-    return start, end
 
 
 class Server:
@@ -27,24 +23,26 @@ class Server:
             with open(self.DATA_FILE) as f:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
-            self.__dataset = dataset[1:]  # Skip header row
+            self.__dataset = dataset[1:]
 
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Retrieve a page of the dataset.
-        """
-        # Ensure page and page_size are valid integers greater than 0
-        assert isinstance(page, int) and page > 0,
-        assert isinstance(page_size, int) and page_size > 0,
+        """gets the pages"""
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
 
-        # Calculate the start and end indexes for the requested page
-        start, end = index_range(page, page_size)
-
-        # Return the slice of the dataset for the requested page
+        start_index, end_index = index_range(page, page_size)
         dataset = self.dataset()
 
-        if start >= len(dataset):
+        if start_index >= len(dataset):
             return []
 
-        return dataset[start:end]
+        return dataset[start_index:end_index]
+
+
+def index_range(page: int, page_size: int) -> Tuple[int, int]:
+    """return pages """
+    start_index = (page - 1) * page_size
+    end_index = page * page_size
+    return start_index, end_index
