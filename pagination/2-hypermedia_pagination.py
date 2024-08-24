@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-
-"""take the same arguments and return a dictionary"""
-
-
+"""
+    Defines a class named Server that returns a dictionary containing
+"""
 import csv
 import math
-from typing import List, Tuple, Dict
+from typing import List, Dict, Optional
 
 
 class Server:
@@ -28,40 +27,37 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """this function gets the page"""
+        """ Verifies that both arguments are integers greater than 0
+            and returns the appropriate page of the dataset.
+        """
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
 
+        dataset = self.dataset()
         start_index, end_index = self.index_range(page, page_size)
-        data = self.dataset()
+        return dataset[start_index:end_index]
 
-        if start_index >= len(data):
-            return []
-
-        return data[start_index:end_index]
-
-    @staticmethod
-    def index_range(page, page_size) -> Tuple[int, int]:
-        """this function returns a tuple with the start and end indexes"""
+    def index_range(self, page: int, page_size: int) -> tuple:
+        """ Returns the correct indexes to paginate the dataset correctly. """
         start_index = (page - 1) * page_size
         end_index = start_index + page_size
         return (start_index, end_index)
 
-    def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
-        """this function returns a dict with info of the page"""
-        assert isinstance(page, int) and page > 0
-        assert isinstance(page_size, int) and page_size > 0
-        start, end = self.index_range(page, page_size)
+    def get_hyper(
+            self, page: int = 1, page_size: int = 10
+            ) -> Dict[str, Optional[int]]:
+        """ Returns a dictionary containing pagination info. """
+        data = self.get_page(page, page_size)
+        total_items = len(self.dataset())
+        total_pages = math.ceil(total_items / page_size)
 
-        total_pages = int(len(self.dataset()) / 10)
-        if (page_size > 0):
-            total_pages = int(len(self.dataset()) / page_size)
-
-        return {
-            'page_size': len(self.get_page(page, page_size)),
-            'page': page,
-            'data': self.get_page(page, page_size),
-            'next_page': page + 1 if len(self.dataset()) > end else None,
-            'prev_page': page - 1 if page > 1 else None,
-            'total_pages': total_pages
+        hypermedia = {
+            "page_size": len(data),
+            "page": page,
+            "data": data,
+            "next_page": page + 1 if page < total_pages else None,
+            "prev_page": page - 1 if page > 1 else None,
+            "total_pages": total_pages,
         }
+
+        return hypermedia
