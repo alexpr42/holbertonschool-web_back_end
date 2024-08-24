@@ -33,29 +33,33 @@ class Server:
         """
         if self.__indexed_dataset is None:
             dataset = self.dataset()
+            truncated_dataset = dataset[:1000]
             self.__indexed_dataset = {
                 i: dataset[i] for i in range(len(dataset))
             }
         return self.__indexed_dataset
 
     def get_hyper_index(self, index: int = None, page_size: int = 10) -> Dict:
-        """Return data in a deletion-resilient manner."""
-        assert index is not None and 0 <= index < len(self.dataset())
-        indexed_data = self.indexed_dataset()
+        """returns a dict"""
+        assert type(index) == int
+        assert type(page_size) == int
+        assert index >= 0
+        assert index < len(self.indexed_dataset())
 
-        # Collect the data starting from the given index, skipping any gaps
+        csv = self.indexed_dataset()
         data = []
-        current_index = index
+
         next_index = index
 
-        while len(data) < page_size and next_index < len(self.dataset()):
-            if next_index in indexed_data:
-                data.append(indexed_data[next_index])
+        for item in range(page_size):
+            while not csv.get(next_index):
+                next_index += 1
+            data.append(csv.get(next_index))
             next_index += 1
 
         return {
             "index": index,
-            "next_index": next_index,
-            "page_size": len(data),
-            "data": data
-        }
+            "data": data,
+            "page_size": page_size,
+            "next_index": next_index
+            }
