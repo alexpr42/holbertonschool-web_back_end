@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
-"""function that list all documents in collection"""
+""" A Python function that lists all documents in a collection. """
 
 
-def insert_school(mongo_collection, **kwargs):
+def list_all(mongo_collection):
     """
-        Inserts a new document using the provided kwargs.
+        Lists all documents in a collection.
 
         Args:
             mongo_collection: The MongoDB collection.
 
         Returns:
-            The id of the inserted document.
+            A list of all documents in the collection.
+            If no documents, return an empty list.
     """
-    result = mongo_collection.insert_one(kwargs)
+    all_documents = mongo_collection.find()
+    list_of_documents = list(all_documents)
 
-    return result.inserted_id
+    return list_of_documents
