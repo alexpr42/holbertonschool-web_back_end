@@ -1,16 +1,11 @@
 #!/usr/bin/env python3
-"""takes the same arguments and return a dictionary"""
+
+"""take the same arguments and return a dictionary"""
 
 
 import csv
 import math
-from typing import List, Dict, Tuple
-
-
-def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    start = (page - 1) * page_size
-    end = page * page_size
-    return start, end
+from typing import List, Tuple, Dict
 
 
 class Server:
@@ -28,43 +23,45 @@ class Server:
             with open(self.DATA_FILE) as f:
                 reader = csv.reader(f)
                 dataset = [row for row in reader]
-            self.__dataset = dataset[1:]  # Skip header row
+            self.__dataset = dataset[1:]
 
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """Retrieve a page of the dataset.
-        """
-        # Ensure page and page_size are valid integers greater than 0
-        assert isinstance(page, int) and page > 0,
-        assert isinstance(page_size, int) and page_size > 0,
+        """this function gets the page"""
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
 
-        # Calculate the start and end indexes for the requested page
-        start, end = index_range(page, page_size)
+        start_index, end_index = self.index_range(page, page_size)
+        data = self.dataset()
 
-        # Return the slice of the dataset for the requested page
-        dataset = self.dataset()
-
-        if start >= len(dataset):
+        if start_index >= len(data):
             return []
 
-        return dataset[start:end]
+        return data[start_index:end_index]
+
+    @staticmethod
+    def index_range(page, page_size) -> Tuple[int, int]:
+        """this function returns a tuple with the start and end indexes"""
+        start_index = (page - 1) * page_size
+        end_index = start_index + page_size
+        return (start_index, end_index)
 
     def get_hyper(self, page: int = 1, page_size: int = 10) -> Dict:
-        """Retrieve hypermedia pagination info.
-        """
-        data = self.get_page(page, page_size)
-        total_items = len(self.dataset())
-        total_pages = math.ceil(total_items / page_size)
+        """this function returns a dict with info of the page"""
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
+        start, end = self.index_range(page, page_size)
 
-        next_page = page + 1 if page < total_pages else None
-        prev_page = page - 1 if page > 1 else None
+        total_pages = int(len(self.dataset()) / 10)
+        if (page_size > 0):
+            total_pages = int(len(self.dataset()) / page_size)
 
         return {
-            "page_size": len(data),
-            "page": page,
-            "data": data,
-            "next_page": next_page,
-            "prev_page": prev_page,
-            "total_pages": total_pages
+            'page_size': len(self.get_page(page, page_size)),
+            'page': page,
+            'data': self.get_page(page, page_size),
+            'next_page': page + 1 if len(self.dataset()) > end else None,
+            'prev_page': page - 1 if page > 1 else None,
+            'total_pages': total_pages
         }
