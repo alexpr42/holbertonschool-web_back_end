@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""coroutine that takes no arguments"""
+"""random generator"""
 
-
-import asyncio
 import random
+import asyncio
+import typing
 
 
-async def async_generator():
-    """async generator with range"""
-    for _ in range(10):
+async def async_generator() -> typing.Generator[float, None, None]:
+    """function async_generator"""
+    for i in range(10):
         await asyncio.sleep(1)
         yield random.uniform(0, 10)
