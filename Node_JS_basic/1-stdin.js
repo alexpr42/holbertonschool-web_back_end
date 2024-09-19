@@ -7,16 +7,13 @@ const rl = readline.createInterface({
 
 console.log('Welcome to Holberton School, what is your name?');
 
-rl.on('line', (input) => {
-  process.stdout.write(`Your name is: ${input}\r`);
+rl.question('', (name) => {
+  if (name) {
+    console.log(`Your name is: ${name}`);
+  }
   rl.close();
 });
 
 rl.on('close', () => {
   console.log('This important software is now closing');
-});
-
-// Handle the case when input is piped in (EOF)
-process.stdin.on('end', () => {
-  rl.close();
 });
