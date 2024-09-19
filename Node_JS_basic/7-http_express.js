@@ -1,43 +1,24 @@
 const express = require('express');
-
-const countStudents = require('./3-read_file_async.js');
+const countStudents = require('./3-read_file_async');
 
 const app = express();
 const port = 1245;
+const path = process.argv[2];
 
-app.get('/', (_req, res) => {
+app.get('/', (req, res) => {
   res.send('Hello Holberton School!');
 });
 
-app.get('/students', async (_req, res) => {
-  res.write('This is the list of our students\n');
-  await countStudents(process.argv[2])
-    .then((data) => {
-      const fields = Object.keys(data);
-      const total = fields.reduce(
-        (acc, curr) => acc + data[curr].numStudents,
-        0,
-      );
-      res.write(`Number of students: ${total}\n`);
-      for (let i = 0; i < fields.length; i += 1) {
-        res.write(
-          `Number of students in ${fields[i]}: ${
-            data[fields[i]].numStudents
-          }. `,
-        );
-        res.write(`List: ${data[fields[i]].names.join(', ')}`);
-        if (i < fields.length - 1) {
-          res.write('\n');
-        }
-      }
-    })
-    .catch((err) => {
-      res.write(err.message);
-    })
-    .finally(() => {
-      res.end();
-    });
+app.get('/students', async (req, res) => {
+  const msg = 'This is the list of our students\n';
+  try {
+    const students = await countStudents(path);
+    res.send(`${msg}${students.join('\n')}`);
+  } catch (err) {
+    res.send(`${msg}${err.message}`);
+  }
 });
+
 app.listen(port);
 
 module.exports = app;
